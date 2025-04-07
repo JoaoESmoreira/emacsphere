@@ -1,0 +1,9 @@
+#+TITLE: GNU Emacs Config
+#+AUTHOR: Joao ES Moreira
+#+DESCRIPTION: Emacsphere is a Emacs configuration designed for development environment in constant orbit around flow and focus.
+#+STARTUP: showeverything
+#+OPTIONS: toc:
+
+
+* TABLE OF CONTENTS :toc:
+

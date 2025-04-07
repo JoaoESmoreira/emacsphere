@@ -1,0 +1,46 @@
+# Emacs backup and autosave files
+*~
+\#*\#
+.\#*
+
+# Emacs server auth files
+/server/
+
+# TRAMP connections
+.tramp
+
+# Custom files (often set in init.el)
+custom.el
+custom.el~
+
+# Package-related files
+elpa/
+eln-cache/
+eshell/history
+eshell/lastdir
+
+# Org-mode related
+org-id-locations
+*.org~  # Backup files
+*.org_archive
+
+# Byte-compiled files
+*.elc
+
+# Bookmarks and savehist
+bookmarks
+savehist
+
+# URL cache
+url/cache
+
+# Lockfiles
+.lock-wscript
+
+# Project-specific
+projectile-bookmarks.eld
+
+# Gnus
+.newsrc
+.newsrc.eld
+
