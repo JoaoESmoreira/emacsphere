@@ -153,6 +153,11 @@
     ;; "f d" '(dashboard-open :wk "Open dashboard buffer")
     "f f" '(find-file :wk "Find files")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
+
+  ;; magit
+  (jm/leader-keys
+    "m" '(:ignore t :wk "Magit")
+    "m g" '(magit-status :which-key "Magit status"))
 )
 
 (use-package org-bullets
@@ -241,6 +246,13 @@
   :slant 'italic)
 (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font-9"))
 (setq-default line-spacing 0.12)
+
+(use-package transient
+  :ensure t)
+
+(use-package magit
+    :ensure t
+    :after evil-collection)
 
 (setq make-backup-files nil) ;; stop create backup files
 (setq backup-directory-alist '((".*" . "~/.Trash")))

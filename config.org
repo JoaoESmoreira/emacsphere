@@ -16,6 +16,7 @@
 - [[#graphical-user-interface-config][GRAPHICAL USER INTERFACE CONFIG]]
   - [[#general-config-ui][General Config UI]]
   - [[#fonts][FONTS]]
+- [[#magit][MAGIT]]
 - [[#sanity][Sanity]]
   - [[#backup-files][Backup Files]]
 
@@ -189,6 +190,11 @@
     ;; "f d" '(dashboard-open :wk "Open dashboard buffer")
     "f f" '(find-file :wk "Find files")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
+
+  ;; magit
+  (jm/leader-keys
+    "m" '(:ignore t :wk "Magit")
+    "m g" '(magit-status :which-key "Magit status"))
 )
 #+end_src
 
@@ -294,6 +300,18 @@
 (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font-9"))
 (setq-default line-spacing 0.12)
 #+end_src
+
+
+* MAGIT
+#+begin_src emacs-lisp
+(use-package transient
+  :ensure t)
+
+(use-package magit
+    :ensure t
+    :after evil-collection)
+#+end_src
+
 
 * Sanity
 ** Backup Files

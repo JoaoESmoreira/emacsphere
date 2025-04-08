@@ -24,6 +24,8 @@ elpaca/builds/
 elpaca/cache/
 elpaca/repos/
 
+# magit
+transient/
 
 # Org-mode related
 org-id-locations
