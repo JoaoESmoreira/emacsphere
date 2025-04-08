@@ -160,10 +160,87 @@
     :hook (org-mode . org-bullets-mode))
 
 (use-package org
-    :hook (org-mode . org-indent-mode)
+    :hook
+	(org-mode . (lambda ()
+		    (org-indent-mode)
+                    (global-display-line-numbers-mode nil)
+		    (setq display-line-numbers nil)))
     :config
-    (setq org-edit-src-content-indentation 0))
+	(setq org-edit-src-content-indentation 0))
 
 (use-package toc-org
     :ensure t
     :hook (org-mode . toc-org-enable))
+
+(delete-selection-mode 1)    ;; You can select text and delete it by typing.
+(electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
+(electric-pair-mode 1)       ;; Turns on automatic parens pairing
+;; The following prevents <> from auto-pairing when electric-pair-mode is on.
+;; Otherwise, org-tempo is broken when you try to <s TAB...
+;; (add-hook 'org-mode-hook (lambda ()
+;;            (setq-local electric-pair-inhibit-predicate
+;;                    `(lambda (c)
+;;                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+(global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+(scroll-bar-mode -1)         ;; Disable visible scrollbar
+(tool-bar-mode -1)           ;; Disable the toolbar
+(tooltip-mode -1)            ;; Disable tooltips
+(menu-bar-mode -1)           ;; Disable the menu bar
+(set-fringe-mode 10)         ;; Give some breathing room
+
+(setq visible-bell t)  ;; Set up the visible bell
+
+(column-number-mode 1)
+(global-display-line-numbers-mode 1) ;; Display line numbers
+(setq display-line-numbers-type 'relative) ;; Add relative number
+
+(global-visual-line-mode t)  ;; Enable truncated lines
+
+;; scroll one line at a time (less "jumpy" than defaults)
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 3))) ;; rolar 3 linhas por vez
+(setq mouse-wheel-progressive-speed nil) ;; sem aceleração
+(setq mouse-wheel-follow-mouse 't) ;; rolar a janela sob o mouse
+(setq scroll-step 1) ;; rolar uma linha de cada vez no teclado
+
+
+(pixel-scroll-precision-mode t)
+(setq redisplay-skip-fontification-on-input t) 
+
+;; init the emacs with full screen
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; close Messages buffer when starting emacs
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (when (get-buffer "*Messages*")
+              (kill-buffer "*Messages*"))))
+
+(set-face-attribute 'default nil
+  :font "FiraCode Nerd Font"
+  :height 90
+  :weight 'medium)
+(set-face-attribute 'variable-pitch nil
+  :font "FiraCode Nerd Font"
+  :height 100
+  :weight 'medium)
+(set-face-attribute 'fixed-pitch nil
+  :font "FiraCode Nerd Font"
+  :height 90
+  :weight 'medium)
+(set-face-attribute 'mode-line-active nil
+  :font "FiraCode Nerd Font"
+  :height 100
+  :weight 'medium)
+(set-face-attribute 'mode-line nil
+  :font "FiraCode Nerd Font"
+  :height 100
+  :weight 'medium)
+(set-face-attribute 'font-lock-comment-face nil
+  :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+  :slant 'italic)
+(add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font-9"))
+(setq-default line-spacing 0.12)
+
+(setq make-backup-files nil) ;; stop create backup files
+(setq backup-directory-alist '((".*" . "~/.Trash")))
