@@ -2,9 +2,6 @@
 
 (require 'buffer-move)   ;; Buffer-move for better window management
 
-(setq make-backup-files nil) ;; stop create backup files
-(setq backup-directory-alist '((".*" . "~/.Trash")))
-
 (defvar elpaca-installer-version 0.10)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -110,6 +107,9 @@
     )
   )
 
+(setq make-backup-files nil) ;; stop create backup files
+(setq backup-directory-alist '((".*" . "~/.Trash")))
+
 (defun volatile-kill-buffer ()
    "Kill current buffer unconditionally."
    (interactive)
@@ -174,6 +174,25 @@
     "m" '(:ignore t :wk "Magit")
     "m g" '(magit-status :which-key "Magit status"))
 )
+
+(use-package which-key
+    :ensure t
+    :init
+        (which-key-mode 1)
+    :diminish
+    :config
+    (setq which-key-side-window-location 'bottom
+        which-key-sort-order #'which-key-key-order-alpha
+        which-key-sort-uppercase-first nil
+        which-key-add-column-padding 1
+        which-key-max-display-columns nil
+        which-key-min-display-lines 6
+        which-key-side-window-slot -10
+        which-key-side-window-max-height 0.25
+        which-key-idle-delay 0.2
+        which-key-max-description-length 25
+        which-key-allow-imprecise-window-fit nil
+        which-key-separator " → " ))
 
 (use-package org-bullets
     :ensure t
@@ -263,54 +282,57 @@
 (setq-default line-spacing 0.12)
 
 (use-package transient
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package magit
     :ensure t
+    :defer t
     :after evil-collection)
 
 (use-package elfeed
-  :ensure t
-  :config
-  (setq elfeed-feeds
-        (quote
-         ;; Linux & Open Source
-         (("https://lwn.net/headlines/newrss" news linux)
-          ("https://www.omgubuntu.co.uk/feed" news linux ubuntu)
-          ("https://www.phoronix.com/rss.php" news linux benchmarks)
-          ("https://www.linuxjournal.com/node/feed" news linux)
-          ("https://www.kernel.org/feeds/kdist.xml" news linux kernel)
-          
-          ;; Computer Science & Programming
-          ("https://technews.acm.org/feeds/todaysnews.xml" news cs)
-          ;; ("https://news.ycombinator.com/rss" news tech programming)
-          ("http://feeds.arstechnica.com/arstechnica/index" news tech)
-          ("https://codeforces.com/rss" programming competitive-programming)
-          
-          ;; Science & Technology
-          ("https://www.nature.com/feeds/news_rss.rdf" news science)
-          ("https://www.science.org/rss/news_current.xml" news science)
-          ("https://www.technologyreview.com/feed/" news tech ai)
-          ("https://www.quantamagazine.org/feed/" news science math cs)
-          
-          ;; Artificial Intelligence & Machine Learning
-          ("https://www.deepmind.com/blog/rss.xml" ai research)
-          ("https://openai.com/blog/rss/" ai research)
-          ("https://ai.googleblog.com/feeds/posts/default" ai research google)
-          ("https://towardsdatascience.com/feed" ai ml data-science)
-          
-          ;; Optimization & Algorithms
-          ("http://www.optimization-online.org/rss/" optimization research)
-          ("https://orinanobworld.blogspot.com/feeds/posts/default" optimization operations-research)
-          ("https://www.mathopt.org/news.rss" optimization math)
+    :ensure t
+    :defer t
+    :config
+    (setq elfeed-feeds
+            (quote
+            ;; Linux & Open Source
+            (("https://lwn.net/headlines/newrss" news linux)
+            ("https://www.omgubuntu.co.uk/feed" news linux ubuntu)
+            ("https://www.phoronix.com/rss.php" news linux benchmarks)
+            ("https://www.linuxjournal.com/node/feed" news linux)
+            ("https://www.kernel.org/feeds/kdist.xml" news linux kernel)
 
-          ("https://www.reddit.com/r/booksuggestions/.rss" booksuggestion reddit)
+            ;; Computer Science & Programming
+            ("https://technews.acm.org/feeds/todaysnews.xml" news cs)
+            ;; ("https://news.ycombinator.com/rss" news tech programming)
+            ("http://feeds.arstechnica.com/arstechnica/index" news tech)
+            ("https://codeforces.com/rss" programming competitive-programming)
+
+            ;; Science & Technology
+            ("https://www.nature.com/feeds/news_rss.rdf" news science)
+            ("https://www.science.org/rss/news_current.xml" news science)
+            ("https://www.technologyreview.com/feed/" news tech ai)
+            ("https://www.quantamagazine.org/feed/" news science math cs)
+
+            ;; Artificial Intelligence & Machine Learning
+            ("https://www.deepmind.com/blog/rss.xml" ai research)
+            ("https://openai.com/blog/rss/" ai research)
+            ("https://ai.googleblog.com/feeds/posts/default" ai research google)
+            ("https://towardsdatascience.com/feed" ai ml data-science)
+
+            ;; Optimization & Algorithms
+            ("http://www.optimization-online.org/rss/" optimization research)
+            ("https://orinanobworld.blogspot.com/feeds/posts/default" optimization operations-research)
+            ("https://www.mathopt.org/news.rss" optimization math)
+
+            ("https://www.reddit.com/r/booksuggestions/.rss" booksuggestion reddit)
          ))))
   
 (use-package elfeed-goodies
-  :ensure t
-  :after elfeed
-  ;; :init
-  :config
-    (elfeed-goodies/setup)
-    (setq elfeed-goodies/entry-pane-size 0.5))
+    :ensure t
+    :defer t
+    :after elfeed
+    :config
+        (elfeed-goodies/setup)
+        (setq elfeed-goodies/entry-pane-size 0.5))
