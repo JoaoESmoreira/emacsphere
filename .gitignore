@@ -19,6 +19,12 @@ eln-cache/
 eshell/history
 eshell/lastdir
 
+# elpaca builds and repos
+elpaca/builds/
+elpaca/cache/
+elpaca/repos/
+
+
 # Org-mode related
 org-id-locations
 *.org~  # Backup files

@@ -2,10 +2,25 @@
 #+AUTHOR: Joao ES Moreira
 #+DESCRIPTION: Emacsphere is a Emacs configuration designed for development environment in constant orbit around flow and focus.
 #+STARTUP: showeverything
-#+OPTIONS: toc:
+#+OPTIONS: toc:2
 
 
 * TABLE OF CONTENTS :toc:
+- [[#imports][Imports]]
+- [[#elpaca-package-manager][Elpaca Package Manager]]
+- [[#evil-mode][Evil Mode]]
+- [[#general-keybinds][GENERAL KEYBINDS]]
+- [[#org-mode][ORG MODE]]
+  - [[#bullets][Bullets]]
+  - [[#table-of-contents][Table of Contents]]
+
+* Imports
+[[https://www.emacswiki.org/emacs/buffer-move.el][EmacsWiki]]
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/scripts/")
+
+(require 'buffer-move)   ;; Buffer-move for better window management
+#+end_src
 
 * Elpaca Package Manager
 #+begin_src emacs-lisp
@@ -139,7 +154,28 @@
     "b p" '(previous-buffer :wk "Previous buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
     "b s" '(save-buffer :wk "Save buffer"))
-  
+
+  (jm/leader-keys
+    "w" '(:ignore t :wk "Windows")
+    ;; Window splits
+    "w c" '(evil-window-delete :wk "Close window")
+    "w n" '(evil-window-new :wk "New window")
+    "w s" '(evil-window-split :wk "Horizontal split window")
+    "w v" '(evil-window-vsplit :wk "Vertical split window")
+    "w o" '(delete-other-windows :wk "Delete other windows")
+    ;; Window motions
+    "w h" '(evil-window-left :wk "Goto window left")
+    "w j" '(evil-window-down :wk "Goto window down")
+    "w k" '(evil-window-up :wk "Goto window up")
+    "w l" '(evil-window-right :wk "Goto window right")
+    "w w" '(evil-window-next :wk "Goto next window")
+    ;; Move Windows
+    "w H" '(buf-move-left :wk "Buffer move left")
+    "w J" '(buf-move-down :wk "Buffer move down")
+    "w K" '(buf-move-up :wk "Buffer move up")
+    "w L" '(buf-move-right :wk "Buffer move right")
+    "w t" '(term :wk "Open terminal"))
+
   ;; files
   (jm/leader-keys
     "f" '(:ignore t :wk "Files")
@@ -148,5 +184,26 @@
     "f f" '(find-file :wk "Find files")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
 )
+#+end_src
+
+
+* ORG MODE
+** Bullets
+#+begin_src emacs-lisp
+(use-package org-bullets
+    :ensure t
+    :hook (org-mode . org-bullets-mode))
+
+(use-package org
+    :hook (org-mode . org-indent-mode)
+    :config
+    (setq org-edit-src-content-indentation 0))
+#+end_src
+
+** Table of Contents
+#+begin_src emacs-lisp
+(use-package toc-org
+    :ensure t
+    :hook (org-mode . toc-org-enable))
 #+end_src
 
