@@ -2,6 +2,9 @@
 
 (require 'buffer-move)   ;; Buffer-move for better window management
 
+(setq make-backup-files nil) ;; stop create backup files
+(setq backup-directory-alist '((".*" . "~/.Trash")))
+
 (defvar elpaca-installer-version 0.10)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -93,8 +96,19 @@
   (define-key evil-motion-state-map (kbd "SPC") nil)
   (define-key evil-motion-state-map (kbd "RET") nil)
   (define-key evil-motion-state-map (kbd "TAB") nil))
+
 ;; Setting RETURN key in org-mode to follow links
 (setq org-return-follows-link  t)
+
+;; elfeed binds configuration
+(with-eval-after-load 'elfeed
+  (evil-define-key 'normal elfeed-search-mode-map
+    (kbd "o") 'elfeed-search-browse-url   ;; Open the news on browser
+    ;; (kbd "RET") 'elfeed-search-show-entry ;; Open the news on browser Emacs
+    (kbd "g") 'elfeed-update              ;; Update the feeds
+    ;; (kbd "q") 'quit-window)               ;; Quit of Elfeed
+    )
+  )
 
 (defun volatile-kill-buffer ()
    "Kill current buffer unconditionally."
@@ -151,6 +165,7 @@
     "f" '(:ignore t :wk "Files")
     "f c" '((lambda () (interactive) (find-file "~/.emacs.d/config.org")) :wk "Find config file")
     ;; "f d" '(dashboard-open :wk "Open dashboard buffer")
+    "f e" '(elfeed :wk "Open elfeed news")
     "f f" '(find-file :wk "Find files")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
 
@@ -254,5 +269,48 @@
     :ensure t
     :after evil-collection)
 
-(setq make-backup-files nil) ;; stop create backup files
-(setq backup-directory-alist '((".*" . "~/.Trash")))
+(use-package elfeed
+  :ensure t
+  :config
+  (setq elfeed-feeds
+        (quote
+         ;; Linux & Open Source
+         (("https://lwn.net/headlines/newrss" news linux)
+          ("https://www.omgubuntu.co.uk/feed" news linux ubuntu)
+          ("https://www.phoronix.com/rss.php" news linux benchmarks)
+          ("https://www.linuxjournal.com/node/feed" news linux)
+          ("https://www.kernel.org/feeds/kdist.xml" news linux kernel)
+          
+          ;; Computer Science & Programming
+          ("https://technews.acm.org/feeds/todaysnews.xml" news cs)
+          ;; ("https://news.ycombinator.com/rss" news tech programming)
+          ("http://feeds.arstechnica.com/arstechnica/index" news tech)
+          ("https://codeforces.com/rss" programming competitive-programming)
+          
+          ;; Science & Technology
+          ("https://www.nature.com/feeds/news_rss.rdf" news science)
+          ("https://www.science.org/rss/news_current.xml" news science)
+          ("https://www.technologyreview.com/feed/" news tech ai)
+          ("https://www.quantamagazine.org/feed/" news science math cs)
+          
+          ;; Artificial Intelligence & Machine Learning
+          ("https://www.deepmind.com/blog/rss.xml" ai research)
+          ("https://openai.com/blog/rss/" ai research)
+          ("https://ai.googleblog.com/feeds/posts/default" ai research google)
+          ("https://towardsdatascience.com/feed" ai ml data-science)
+          
+          ;; Optimization & Algorithms
+          ("http://www.optimization-online.org/rss/" optimization research)
+          ("https://orinanobworld.blogspot.com/feeds/posts/default" optimization operations-research)
+          ("https://www.mathopt.org/news.rss" optimization math)
+
+          ("https://www.reddit.com/r/booksuggestions/.rss" booksuggestion reddit)
+         ))))
+  
+(use-package elfeed-goodies
+  :ensure t
+  :after elfeed
+  ;; :init
+  :config
+    (elfeed-goodies/setup)
+    (setq elfeed-goodies/entry-pane-size 0.5))
