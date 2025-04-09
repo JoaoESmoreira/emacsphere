@@ -25,6 +25,7 @@
 - [[#development-enviroment][Development Enviroment]]
   - [[#magit][MAGIT]]
   - [[#vterm][Vterm]]
+  - [[#hightlight][HightLight]]
 - [[#elfeed-news][Elfeed News]]
 
 * Imports
@@ -429,6 +430,36 @@
                   (reusable-frames . visible)
                   (window-height . 0.4))))
 #+end_src
+
+** TODO HightLight
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :ensure t
+  :hook ((org-mode . hl-todo-mode)
+         (prog-mode . hl-todo-mode))
+  :config
+  (setq hl-todo-highlight-punctuation ":"
+        hl-todo-keyword-faces
+        `(("TODO"       warning bold)
+          ("FIXME"      error bold)
+          ("HACK"       font-lock-constant-face bold)
+          ("REVIEW"     font-lock-keyword-face bold)
+          ("NOTE"       success bold)
+          ("DEPRECATED" font-lock-doc-face bold)
+          ("todo"       warning bold)
+          ("fixme"      error bold)
+          ("hack"       font-lock-constant-face bold)
+          ("review"     font-lock-keyword-face bold)
+          ("note"       success bold)
+          ("deprecated" font-lock-doc-face bold)
+          ("Todo"       warning bold)
+          ("Fixme"      error bold)
+          ("Hack"       font-lock-constant-face bold)
+          ("Review"     font-lock-keyword-face bold)
+          ("Note"       success bold)
+          ("Deprecated" font-lock-doc-face bold))))
+#+end_src
+
 * Elfeed News
 #+begin_src emacs-lisp
 (use-package elfeed

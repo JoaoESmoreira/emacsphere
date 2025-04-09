@@ -267,12 +267,6 @@
             (when (get-buffer "*Messages*")
               (kill-buffer "*Messages*"))))
 
-;; (defun read-ascii-logo (file-path)
-;;   "Read the content file and return it into a string."
-;;   (with-temp-buffer
-;;     (insert-file-contents file-path)
-;;     (buffer-string)))
-
 (use-package dashboard
     :ensure t 
     :init
@@ -359,6 +353,32 @@
                   ;;(dedicated . t) ;dedicated is supported in emacs27
                   (reusable-frames . visible)
                   (window-height . 0.4))))
+
+(use-package hl-todo
+  :ensure t
+  :hook ((org-mode . hl-todo-mode)
+         (prog-mode . hl-todo-mode))
+  :config
+  (setq hl-todo-highlight-punctuation ":"
+        hl-todo-keyword-faces
+        `(("TODO"       warning bold)
+          ("FIXME"      error bold)
+          ("HACK"       font-lock-constant-face bold)
+          ("REVIEW"     font-lock-keyword-face bold)
+          ("NOTE"       success bold)
+          ("DEPRECATED" font-lock-doc-face bold)
+          ("todo"       warning bold)
+          ("fixme"      error bold)
+          ("hack"       font-lock-constant-face bold)
+          ("review"     font-lock-keyword-face bold)
+          ("note"       success bold)
+          ("deprecated" font-lock-doc-face bold)
+          ("Todo"       warning bold)
+          ("Fixme"      error bold)
+          ("Hack"       font-lock-constant-face bold)
+          ("Review"     font-lock-keyword-face bold)
+          ("Note"       success bold)
+          ("Deprecated" font-lock-doc-face bold))))
 
 (use-package elfeed
     :ensure t
