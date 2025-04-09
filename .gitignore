@@ -26,6 +26,7 @@ elpaca/repos/
 
 # magit
 transient/
+recentf
 
 # Org-mode related
 org-id-locations

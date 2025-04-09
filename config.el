@@ -97,6 +97,9 @@
 ;; Setting RETURN key in org-mode to follow links
 (setq org-return-follows-link  t)
 
+(use-package evil-nerd-commenter
+    :ensure t)
+
 ;; elfeed binds configuration
 (with-eval-after-load 'elfeed
   (evil-define-key 'normal elfeed-search-mode-map
@@ -164,7 +167,7 @@
   (jm/leader-keys
     "f" '(:ignore t :wk "Files")
     "f c" '((lambda () (interactive) (find-file "~/.emacs.d/config.org")) :wk "Find config file")
-    ;; "f d" '(dashboard-open :wk "Open dashboard buffer")
+    "f d" '(dashboard-open :wk "Open dashboard buffer")
     "f e" '(elfeed :wk "Open elfeed news")
     "f f" '(find-file :wk "Find files")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
@@ -173,6 +176,13 @@
   (jm/leader-keys
     "m" '(:ignore t :wk "Magit")
     "m g" '(magit-status :which-key "Magit status"))
+
+  ;; vterm
+  (jm/leader-keys
+    "v" '(:ignore t :wk "Neotree")
+    "v o" '(vterm :wk "Open vterm")
+    "v t" '(vterm-toggle :wk "Toggle vterm")
+    "v T" '(vterm-toggle-show :wk "Toggle vterm show"))
 )
 
 (use-package which-key
@@ -196,6 +206,7 @@
 
 (use-package org-bullets
     :ensure t
+    :defer t
     :hook (org-mode . org-bullets-mode))
 
 (use-package org
@@ -204,11 +215,13 @@
 		    (org-indent-mode)
                     (global-display-line-numbers-mode nil)
 		    (setq display-line-numbers nil)))
+    :defer t
     :config
 	(setq org-edit-src-content-indentation 0))
 
 (use-package toc-org
     :ensure t
+    :defer t
     :hook (org-mode . toc-org-enable))
 
 (delete-selection-mode 1)    ;; You can select text and delete it by typing.
@@ -254,6 +267,34 @@
             (when (get-buffer "*Messages*")
               (kill-buffer "*Messages*"))))
 
+;; (defun read-ascii-logo (file-path)
+;;   "Read the content file and return it into a string."
+;;   (with-temp-buffer
+;;     (insert-file-contents file-path)
+;;     (buffer-string)))
+
+(use-package dashboard
+    :ensure t 
+    :init
+        (setq initial-buffer-choice 'dashboard-open)
+        (setq dashboard-set-heading-icons t)
+        (setq dashboard-set-file-icons t)
+        (setq dashboard-banner-logo-title "(Emacs)phere Is More Than A Text Editor!")
+        (setq dashboard-startup-banner "~/.emacs.d/images/logo.txt")
+        ;; (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+        ;; (setq dashboard-startup-banner "~/.emacs/images/emacsphere-dash.png")  ;; use custom image as banner
+        (setq dashboard-center-content nil)
+        (setq dashboard-items '((recents . 5)
+                                (agenda . 5 )
+                                (bookmarks . 3)
+                                (projects . 3)
+                                (registers . 3)))
+    :custom
+        (dashboard-modify-heading-icons '((recents . "file-text")
+                                        (bookmarks . "book")))
+    :config
+        (dashboard-setup-startup-hook))
+
 (set-face-attribute 'default nil
   :font "FiraCode Nerd Font"
   :height 90
@@ -289,6 +330,35 @@
     :ensure t
     :defer t
     :after evil-collection)
+
+(use-package vterm
+    :ensure t
+    :config
+        (setq shell-file-name "/bin/sh"
+            vterm-max-scrollback 5000))
+
+(use-package vterm-toggle
+    :ensure t
+    :after vterm
+    :config
+    ;; When running programs in Vterm and in 'normal' mode, make sure that ESC
+    ;; kills the program as it would in most standard terminal programs.
+    (evil-define-key 'normal vterm-mode-map (kbd "<escape>") 'vterm--self-insert)
+    (setq vterm-toggle-fullscreen-p nil)
+    (setq vterm-toggle-scope 'project)
+    (add-to-list 'display-buffer-alist
+               '((lambda (buffer-or-name _)
+                     (let ((buffer (get-buffer buffer-or-name)))
+                       (with-current-buffer buffer
+                         (or (equal major-mode 'vterm-mode)
+                             (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                  (display-buffer-reuse-window display-buffer-at-bottom)
+                  ;;(display-buffer-reuse-window display-buffer-in-direction)
+                  ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                  ;;(direction . bottom)
+                  ;;(dedicated . t) ;dedicated is supported in emacs27
+                  (reusable-frames . visible)
+                  (window-height . 0.4))))
 
 (use-package elfeed
     :ensure t
