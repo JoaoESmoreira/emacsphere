@@ -1,0 +1,96 @@
+#+TITLE: README GNU Emacs Config
+#+AUTHOR: Joao ES Moreira
+#+DESCRIPTION: Emacsphere is a Emacs configuration designed for development environment in constant orbit around flow and focus.
+#+OPTIONS: toc:2
+
+* Table of Contents :toc:
+- [[#emacs-configuration-dyson-sphere-for-workflow][Emacs Configuration: Dyson Sphere for Workflow]]
+  - [[#objectives][Objectives]]
+  - [[#features][Features]]
+  - [[#installation][Installation]]
+  - [[#customization][Customization]]
+  - [[#contributing][Contributing]]
+  - [[#license][License]]
+
+* Emacs Configuration: Dyson Sphere for Workflow
+
+This project aims to transform Emacs into a powerful and efficient
+tool, capable of maximizing productivity and optimizing the
+workflow. The goal is to configure Emacs in a way that takes full
+advantage of its features and turns it into a personal "Dyson Sphere",
+where every resource and functionality are maximized to generate the
+greatest "flow of energy" in our workspace.
+
+** Objectives
+
+- *Full Personalization:* Configure Emacs to uniquely adapt to your
+  working style.
+- *Maximum Efficiency:* Maximize performance and productivity
+  through shortcuts, extensions, and optimizations.
+- *Complete Integration:* Connect Emacs with other tools and
+  technologies in your daily workflow.
+- *Ease of Use:* Make Emacs not just a powerful tool but also easy
+  to use intuitively.
+
+** Features
+
+- *Workflow Optimization:* Configure custom shortcuts, quick
+  commands, and efficient navigation modes.
+- *Task Automation:* :TODO: Create scripts to automate daily routines and
+  improve efficiency.
+
+** Installation
+
+*** Requirements
+
+- Emacs 29 or higher
+
+*** Steps
+
+1. *Install Emacs:*
+   - On Ubuntu/Debian: =sudo apt install emacs=
+   - On macOS: =brew install emacs=
+   - On Windows: Download the Emacs version for Windows from [[https://www.gnu.org/software/emacs/download.html#nonfree][emacsforwindows]].
+
+2. *Clone the Configuration Repository:*
+
+   Clone this repository to the Emacs configuration directory:
+
+#+begin_src shell
+git clone https://github.com/JoaoESmoreira/emacsphere.git ~/.emacs.d
+#+end_src
+
+3. *Install Dependencies:*
+
+   - Open Emacs and it will start to install the dependencies.
+
+4. *Configure Plugins and Extensions:*
+
+   - Customize the packages as needed to suit your workflow.
+
+5. *Restart Emacs:*
+
+   After installing all the packages, restart Emacs to ensure all
+   configurations and extensions are active.
+
+** Customization
+
+This setup provides a solid foundation to start with. However, you can
+customize and expand it as needed. Some suggestions for customization
+include:
+
+- *Shortcut Adjustments:* Personalize keyboard shortcuts to match
+  your working style.
+- *Integration with Other Tools:* Add integrations with other
+  systems and tools you use (e.g., Slack, Trello, Docker).
+- *Performance Improvements:* If you're working with large files or
+  projects, adjust settings to optimize performance.
+
+** Contributing
+
+If you would like to improve or add new features, feel free to create
+a "Pull Request." Contributions to this project are always welcome!
+
+** License
+
+This project is licensed under the [[file:LICENSE][MIT License]].
