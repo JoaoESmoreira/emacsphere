@@ -98,7 +98,8 @@
 (setq org-return-follows-link  t)
 
 (use-package evil-nerd-commenter
-    :ensure t)
+    :ensure t
+    :defer t)
 
 ;; elfeed binds configuration
 (with-eval-after-load 'elfeed
@@ -170,7 +171,19 @@
     "f d" '(dashboard-open :wk "Open dashboard buffer")
     "f e" '(elfeed :wk "Open elfeed news")
     "f f" '(find-file :wk "Find files")
+    "f u" '(sudo-edit-find-file :wk "Sudo find file")
+    "f U" '(sudo-edit :wk "Sudo edit file")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
+
+  ;; bookmarks and registers
+  (jm/leader-keys
+    "r" '(:ignore t :wk "Bookmarks")
+    "r j" '(bookmark-jump :wk "Jump to the bookmark <name>")
+    "r d" '(bookmark-delete :wk "Delete the bookmark <name>")
+    "r l" '(bookmark-bmenu-list :wk "List the the bookmarks")
+    "r n" '(bookmark-set :wk "Set a new bookmark")
+    "r N" '(bookmark-set-no-overwrite :wk "Set a new bookmark without overwrite an existing bookmark")
+    "r s" '(bookmark-save :wk "Save all the current bookmark values"))
 
   ;; magit
   (jm/leader-keys
@@ -200,7 +213,7 @@
         which-key-side-window-slot -10
         which-key-side-window-max-height 0.25
         which-key-idle-delay 0.2
-        which-key-max-description-length 25
+        which-key-max-description-length 35
         which-key-allow-imprecise-window-fit nil
         which-key-separator " → " ))
 
@@ -280,9 +293,9 @@
         (setq dashboard-center-content nil)
         (setq dashboard-items '((recents . 5)
                                 (agenda . 5 )
-                                (bookmarks . 3)
-                                (projects . 3)
-                                (registers . 3)))
+                                (bookmarks . 5)))
+                                ;; (projects . 3)
+                                ;; (registers . 3)))
     :custom
         (dashboard-modify-heading-icons '((recents . "file-text")
                                         (bookmarks . "book")))
@@ -327,12 +340,14 @@
 
 (use-package vterm
     :ensure t
+    :defer t
     :config
         (setq shell-file-name "/bin/sh"
             vterm-max-scrollback 5000))
 
 (use-package vterm-toggle
     :ensure t
+    :defer t
     :after vterm
     :config
     ;; When running programs in Vterm and in 'normal' mode, make sure that ESC
@@ -356,6 +371,7 @@
 
 (use-package hl-todo
   :ensure t
+  :defer t
   :hook ((org-mode . hl-todo-mode)
          (prog-mode . hl-todo-mode))
   :config
@@ -379,6 +395,10 @@
           ("Review"     font-lock-keyword-face bold)
           ("Note"       success bold)
           ("Deprecated" font-lock-doc-face bold))))
+
+(use-package sudo-edit
+    :ensure t
+    :defer t)
 
 (use-package elfeed
     :ensure t
@@ -416,7 +436,9 @@
             ("https://orinanobworld.blogspot.com/feeds/posts/default" optimization operations-research)
             ("https://www.mathopt.org/news.rss" optimization math)
 
+	    ;; Redit Commutities
             ("https://www.reddit.com/r/booksuggestions/.rss" booksuggestion reddit)
+	    ("https://www.reddit.com/r/emacs/.rss" emacs reddit)
          ))))
   
 (use-package elfeed-goodies

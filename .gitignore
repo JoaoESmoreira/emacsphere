@@ -53,3 +53,5 @@ projectile-bookmarks.eld
 .newsrc
 .newsrc.eld
 
+# sudos
+tramp
