@@ -28,6 +28,8 @@
   - [[#todos-hightlight][TODOs HightLight]]
   - [[#sudo-file-edit][Sudo File Edit]]
 - [[#elfeed-news][Elfeed News]]
+- [[#pdf-tools][PDF tools]]
+- [[#request][Request]]
 
 * Imports
 [[https://www.emacswiki.org/emacs/buffer-move.el][EmacsWiki]]
@@ -356,7 +358,7 @@
         (setq dashboard-set-heading-icons t)
         (setq dashboard-set-file-icons t)
         (setq dashboard-banner-logo-title "(Emacs)phere Is More Than A Text Editor!")
-        (setq dashboard-startup-banner "~/.emacs.d/images/logo.txt")
+        (setq dashboard-startup-banner "~/.emacs.d/images/logo2.txt")
         ;; (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
         ;; (setq dashboard-startup-banner "~/.emacs/images/emacsphere-dash.png")  ;; use custom image as banner
         (setq dashboard-center-content nil)
@@ -534,4 +536,40 @@
     :config
         (elfeed-goodies/setup)
         (setq elfeed-goodies/entry-pane-size 0.5))
+#+end_src
+
+* PDF tools
+#+begin_src emacs-lisp
+(use-package pdf-tools
+    :ensure t
+    :defer t
+    :commands (pdf-loader-install)
+    :mode "\\.pdf\\'"
+    :bind (:map pdf-view-mode-map
+                ("j" . pdf-view-next-line-or-next-page)
+                ("k" . pdf-view-previous-line-or-previous-page)
+                ("C-=" . pdf-view-enlarge)
+                ("C--" . pdf-view-shrink))
+    :init (pdf-loader-install)
+    :config (add-to-list 'revert-without-query ".pdf"))
+
+(add-hook 'pdf-view-mode-hook (lambda ()
+                              (setq pdf-view-display-size 'fit-page) ;; Ajusta o tamanho da página ao buffer
+                              (setq pdf-view-use-scaling t)          ;; Habilita escalonamento para melhor qualidade
+                              (setq pdf-view-use-imagemagick nil)    ;; Desativa o uso do ImageMagick (se estiver habilitado)
+                              (setq pdf-view-resolution 200)         ;; Define resolução em DPI (300 é uma boa qualidade)
+                              (setq pdf-cache-prefetch-delay 0.5)    ;; Prefetch de páginas vizinhas
+                              (setq pdf-cache-prefetch-pages 5)      ;; Número de páginas para pré-carregar
+                              (setq display-line-numbers nil)
+                              (setq-local redisplay-dont-pause t)
+                              (hl-line-mode -1)
+                              (blink-cursor-mode -1)
+                              (display-line-numbers-mode -1)))
+#+end_src
+
+* Request
+#+begin_src emacs-lisp
+(use-package request
+    :ensure t
+    :defer t)
 #+end_src
