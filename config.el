@@ -130,14 +130,30 @@
     :prefix "SPC"
     :global-prefix "M-SPC") ;; leader key in insert mode
   
+  ;; agenda
+  (jm/leader-keys
+    "a" '(:ignore t :wk "Org-agenda")
+    "a a" '(org-agenda :wk "Open org agenda menu")
+    "a p" '(org-priority :wk "Insert a priority")
+    "a s" '(org-schedule :wk "Insert a schedule")
+    "a t" '((lambda () (interactive) (find-file "~/Documents/OrgFiles/Tasks.org")) :wk "Find tasks file"))
+
+  ;; org
+  (jm/leader-keys
+    "o" '(:ignore t :wk "Org-agenda")
+    "o t p" '(org-timer-pause-or-continue :wk "Pause/Continue the timer")
+    "o t q" '(org-timer-stop :wk "Stop timer")
+    "o t s" '(org-timer-start :wk "Start timer")
+    "o t t" '(org-timer-set-timer :wk "Set decreasing timer"))
+
   ;; buffers
   (jm/leader-keys
     "b" '(:ignore t :wk "Buffer")
     "b b" '(switch-to-buffer :wk "Switch buffer")
     ;; "b c" '(kill-this-buffer :wk "Close this buffer")
     "b c" '(volatile-kill-buffer :wk "Close this buffer")
-    "b k" '(kill-buffer :wk "Close a buffer")
     "b i" '(ibuffer :wk "Ibuffer")
+    "b k" '(kill-buffer :wk "Close a buffer")
     "b n" '(next-buffer :wk "Next buffer")
     "b p" '(previous-buffer :wk "Previous buffer")
     "b r" '(revert-buffer :wk "Reload buffer")
@@ -171,8 +187,14 @@
     "f d" '(dashboard-open :wk "Open dashboard buffer")
     "f e" '(elfeed :wk "Open elfeed news")
     "f f" '(find-file :wk "Find files")
+    "f r" '((lambda () 
+	        (interactive)
+                (load-file "~/.emacs.d/init.el")
+                (ignore (elpaca-process-queues)))
+              :wk "Reload emacs config")
     "f u" '(sudo-edit-find-file :wk "Sudo find file")
     "f U" '(sudo-edit :wk "Sudo edit file")
+    "f y" '(copy-file :wk "Copy this file")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
 
   ;; bookmarks and registers
@@ -217,10 +239,34 @@
         which-key-allow-imprecise-window-fit nil
         which-key-separator " → " ))
 
-(use-package org-bullets
-    :ensure t
-    :defer t
-    :hook (org-mode . org-bullets-mode))
+(use-package counsel
+  :after ivy
+  :ensure t
+  :config (counsel-mode))
+
+(use-package ivy
+  :ensure t
+  :bind
+    (("C-c C-r" . ivy-resume)
+     ("C-x B" . ivy-switch-buffer-other-window))
+  :custom
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq enable-recursive-minibuffers t)
+  :config
+    (ivy-mode))
+
+(use-package ivy-rich
+  :after ivy
+  :ensure t
+  :init (ivy-rich-mode 1)
+  :custom
+    (ivy-virtual-abbreviate 'full
+     ivy-rich-switch-buffer-align-virtual-buffer t
+     ivy-rich-path-style 'abbrev)
+  :config
+    (ivy-set-display-transformer 'ivy-switch-buffer
+                                 'ivy-rich-switch-buffer-transformer))
 
 (use-package org
     :hook
@@ -231,6 +277,56 @@
     :defer t
     :config
 	(setq org-edit-src-content-indentation 0))
+
+(setq org-agenda-files 
+        '("~/Documents/OrgFiles/Tasks.org"))
+
+(setq org-agenda-span 31) ;; mostra 7 dias
+(setq org-agenda-start-day "-7d") ;; começa 3 dias antes de hoje
+
+(setq org-agenda-custom-commands
+    '(("A" "View all details"
+        ((tags "PRIORITY=\"A\""
+                ((org-agenda-overriding-header "High-priority tasks:")))
+        (tags "PRIORITY=\"B\""
+                ((org-agenda-overriding-header "Medium-priority tasks:")))
+        (tags "PRIORITY=\"C\""
+                ((org-agenda-overriding-header "Low-priority tasks:")))
+        (tags "reminder"
+                ((org-agenda-overriding-header "Tasks marked with reminders:")))
+        (agenda "")
+        (alltodo "")))))
+
+(use-package org-fancy-priorities
+    :ensure t
+    :defer t
+    :hook (org-mode . org-fancy-priorities-mode)
+    :config
+        (setq org-fancy-priorities-list '("🔴" "🟡" "🟢")))
+
+(setq org-todo-keywords
+    '((sequence
+        "TODO(t)"
+        "DONE(d)"
+        "WAIT(w)"
+        "CANCELLED(c)")))
+
+(setq org-todo-keyword-faces
+      '(("TODO"      . (:foreground "orange red" :weight bold))
+        ("WAIT"      . (:foreground "goldenrod" :weight bold))
+        ("DONE"      . (:foreground "forest green" :weight bold))
+        ("CANCELLED" . (:foreground "gray50" :weight bold :strike-through t))))
+
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+	    (evil-mode 1)
+            (evil-normalize-keymaps)
+            (evil-local-mode 1)))
+
+(use-package org-bullets
+    :ensure t
+    :defer t
+    :hook (org-mode . org-bullets-mode))
 
 (use-package toc-org
     :ensure t
@@ -328,6 +424,18 @@
   :slant 'italic)
 (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font-9"))
 (setq-default line-spacing 0.12)
+
+(use-package all-the-icons
+  :ensure t
+  :config (display-graphic-p))
+    
+(use-package all-the-icons-dired
+  :ensure t
+  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+
+(use-package all-the-icons-ivy-rich
+  :ensure t
+  :init (all-the-icons-ivy-rich-mode 1))
 
 (use-package transient
   :ensure t
