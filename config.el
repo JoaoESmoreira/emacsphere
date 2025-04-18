@@ -236,6 +236,11 @@
     "v T" '(vterm-toggle-show :wk "Toggle vterm show"))
 )
 
+(global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-<down>") 'shrink-window)
+(global-set-key (kbd "C-<up>") 'enlarge-window)
+
 (use-package which-key
     :ensure t
     :init
@@ -325,13 +330,17 @@
         "TODO(t)"
         "DONE(d)"
         "WAIT(w)"
-        "CANCELLED(c)")))
+        "CANCELLED(c)"
+        "IN-PROGRESS(p)"
+)))
 
 (setq org-todo-keyword-faces
       '(("TODO"      . (:foreground "orange red" :weight bold))
         ("WAIT"      . (:foreground "goldenrod" :weight bold))
         ("DONE"      . (:foreground "forest green" :weight bold))
-        ("CANCELLED" . (:foreground "gray50" :weight bold :strike-through t))))
+        ("CANCELLED" . (:foreground "gray50" :weight bold :strike-through t))
+        ("IN-PROGRESS" . (:foreground "dodger blue" :weight bold))
+))
 
 (add-hook 'org-agenda-mode-hook
           (lambda ()
