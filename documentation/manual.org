@@ -1,0 +1,571 @@
+#+TITLE: Emacsphere Usage Manual
+#+AUTHOR: Joao ES Moreira
+#+DESCRIPTION: User manual for the Emacsphere Emacs configuration, focused on development, flow, and focus.
+#+STARTUP: showeverything
+#+OPTIONS: toc:4
+
+
+* Table of Contents :toc:
+- [[#introduction][Introduction]]
+- [[#important-general-concepts][Important General Concepts]]
+  - [[#keys][Keys]]
+  - [[#key-sequence-documentation][Key sequence documentation]]
+  - [[#buffer-and-window-management][Buffer and Window Management]]
+- [[#package-management][Package Management]]
+  - [[#elpaca][Elpaca]]
+- [[#org-basics][Org Basics]]
+  - [[#key-org-mode-concepts][Key Org Mode Concepts]]
+  - [[#essential-keybindings][Essential Keybindings]]
+  - [[#managing-tasks-and-projects][Managing Tasks and Projects]]
+  - [[#introduction-to-org-mode-timer][Introduction to Org Mode Timer]]
+  - [[#why-use-org-mode-timer][Why Use Org Mode Timer?]]
+  - [[#key-timer-features][Key Timer Features]]
+  - [[#org-timer-keybindings][Org Timer Keybindings]]
+  - [[#how-to-use-the-timer][How to Use the Timer]]
+- [[#️main-programs-integrated-in-the-configuration][️Main Programs Integrated in the Configuration]]
+  - [[#elfeed-rss-reader][Elfeed: RSS Reader]]
+  - [[#pdf-tools-pdf-viewer][PDF Tools: PDF Viewer]]
+  - [[#magit-git-interface][Magit: Git Interface]]
+  - [[#vterm][Vterm]]
+- [[#final-thoughts][Final Thoughts]]
+
+* Introduction
+Emacsphere is a tailored Emacs configuration designed to maximize
+productivity and focus for developers.  The goal is to configure Emacs
+in a way that takes full advantage of its features and turns it into a
+personal “Dyson Sphere”, where every resource and functionality are
+maximized to generate the greatest “flow of energy” in our workspace.
+
+This manual describes how to use Emacsphere and some of the ways to
+customize it.
+
+
+    Copyright © 2025, Joao ES Moreira
+
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    “Software”), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+    LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+* Important General Concepts
+** Keys
+=Key sequences=: what you type to request one action.
+
+The most keybinds of *Emacs* still available on *Emacsphere*. However,
+someones was modified and other was added, in order to improve the
+work flow.
+
+*** Evil Mode
+[[https://github.com/emacs-evil/evil][Evil]] emulates the main features of Vim and provides facilities for
+writing custom extensions.
+
+Key features:
+    - Modal editing (normal, insert, and visual)
+    - Window splits default to right/below.
+    - C-u scrolls up in normal mode.
+    - Evil-Collection extends Evil to more Emacs modes.
+
+If you never used vim before, it is possible to do the evil tutorial
+with: =M-x evil-tutor-start=.
+
+*** Evil States
+
+| State      | Description                          |
+|------------+--------------------------------------|
+| Normal     | Navigate and manipulate text         |
+| Insert     | Type and edit text freely            |
+| Visual     | Select text for editing              |
+| Emacs      | Fall back to original Emacs behavior |
+| Replace    | Overwrite text character-by-character|
+| Motion     | Read-only movement                   |
+
+Switching between them is intuitive:
+- =i= to go to *insert*
+- =ESC= to return to *normal*
+- =v=, =V=, =C-v= for *visual modes* 
+
+*** Keybindings You Should Master
+
+| Mode   | Key    | Action                             |
+|--------+--------+------------------------------------|
+| Normal | h/j/k/l| Move left/down/up/right            |
+| Normal | w/W    | Move forward by word/WORD          |
+| Normal | b/B    | Move backward by word/WORD         |
+| Normal | gg/G   | Go to beginning/end of buffer      |
+| Normal | 0/^/$  | Start of line / first char / end   |
+| Normal | dd     | Delete current line                |
+| Normal | yy     | Yank (copy) line                   |
+| Normal | p/P    | Paste after/before cursor          |
+| Visual | v/V    | Start visual char/line mode        |
+| Visual | y/d/c  | Yank/delete/change selection       |
+| Normal | u      | Undo                               |
+| Normal | C-r    | Redo                               |
+
+*** Commenting Made Easy with evil-nerd-commenter
+With [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]], commenting lines or regions becomes seamless and powerful.
+
+| Mode       | Keybinding    | Action                              |
+|------------+---------------+-------------------------------------|
+| Normal     | `SPC TAB TAB` | Comment/uncomment current line      |
+| Visual     | `SPC TAB TAB` | Comment/uncomment selection         |
+
+Features:
+- Supports multiple major modes (works in any language)
+- Smart toggling: comments if not commented, uncomments otherwise
+- Works with Evil's visual selections and motions
+
+
+** Key sequence documentation
+In the following table it is possible to find the documentation of all *key sequence*.
+
+| Prefix   | Key(s) | Command                                  | Description                                 |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC h    |        | manual-emacsphere                        | Emacsphere help                             |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC a    | a      | org-agenda                               | Open org agenda menu                        |
+|          | f      | (lambda ...)                             | Find tasks file                             |
+|          | p      | org-priority                             | Insert a priority                           |
+|          | s      | org-schedule                             | Insert a schedule                           |
+|          | t      | org-todo                                 | Change TODO state                           |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC o    | t p    | org-timer-pause-or-continue              | Pause or continue the timer                 |
+|          | t q    | org-timer-stop                           | Stop timer                                  |
+|          | t s    | org-timer-start                          | Start timer                                 |
+|          | t t    | org-timer-set-timer                      | Set decreasing timer                        |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC e    | b      | eval-buffer                              | Evaluate elisp in buffer                    |
+|          | d      | eval-defun                               | Evaluate defun containing or after point    |
+|          | e      | eval-expression                          | Evaluate an elisp expression                |
+|          | l      | eval-last-sexp                           | Evaluate expression before point            |
+|          | r      | eval-region                              | Evaluate elisp in region                    |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC b    | b      | switch-to-buffer                         | Switch buffer                               |
+|          | c      | volatile-kill-buffer                     | Close this buffer (unconditionally)         |
+|          | i      | ibuffer                                  | Ibuffer                                     |
+|          | k      | kill-buffer                              | Close a buffer                              |
+|          | n      | next-buffer                              | Next buffer                                 |
+|          | p      | previous-buffer                          | Previous buffer                             |
+|          | r      | revert-buffer                            | Reload buffer                               |
+|          | s      | save-buffer                              | Save buffer                                 |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC w    | c      | evil-window-delete                       | Close window                                |
+|          | n      | evil-window-new                          | New window                                  |
+|          | s      | evil-window-split                        | Horizontal split window                     |
+|          | v      | evil-window-vsplit                       | Vertical split window                       |
+|          | o      | delete-other-windows                     | Delete other windows                        |
+|          | h      | evil-window-left                         | Goto window left                            |
+|          | j      | evil-window-down                         | Goto window down                            |
+|          | k      | evil-window-up                           | Goto window up                              |
+|          | l      | evil-window-right                        | Goto window right                           |
+|          | w      | evil-window-next                         | Goto next window                            |
+|          | H      | buf-move-left                            | Move buffer left                            |
+|          | J      | buf-move-down                            | Move buffer down                            |
+|          | K      | buf-move-up                              | Move buffer up                              |
+|          | L      | buf-move-right                           | Move buffer right                           |
+|          | t      | term                                     | Open terminal                               |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC f    | c      | (lambda ...)                             | Find config file                            |
+|          | d      | dashboard-open                           | Open dashboard buffer                       |
+|          | e      | elfeed                                   | Open elfeed news                            |
+|          | f      | find-file                                | Find files                                  |
+|          | r      | (lambda ...)                             | Reload Emacs config                         |
+|          | u      | sudo-edit-find-file                      | Sudo find file                              |
+|          | U      | sudo-edit                                | Sudo edit file                              |
+|          | y      | copy-file                                | Copy a file                                 |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| TAB TAB  |        | evilnc-comment-or-uncomment-lines        | Comment/uncomment line                      |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC r    | j      | bookmark-jump                            | Jump to bookmark                            |
+|          | d      | bookmark-delete                          | Delete bookmark                             |
+|          | l      | bookmark-bmenu-list                      | List bookmarks                              |
+|          | n      | bookmark-set                             | Set new bookmark                            |
+|          | N      | bookmark-set-no-overwrite                | Set bookmark without overwriting existing   |
+|          | s      | bookmark-save                            | Save current bookmark values                |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC m    | g      | magit-status                             | Magit status                                |
+|----------+--------+------------------------------------------+---------------------------------------------|
+| SPC v    | o      | vterm                                    | Open vterm                                  |
+|          | t      | vterm-toggle                             | Toggle vterm                                |
+|          | T      | vterm-toggle-show                        | Toggle vterm show                           |
+
+** Buffer and Window Management
+In Emacs, the most important object is the buffer. A buffer is an
+in-memory representation of text—whether it’s a file, a shell, a web
+page, or even an ephemeral output like help or compilation
+results. Every meaningful interaction happens through buffers. You
+don't open files—you open buffers that may be linked to files. You
+don't view output—you view buffers.
+
+Because buffers are the core of everything in Emacs, managing them
+efficiently is essential for a smooth, distraction-free
+workflow. Losing track of buffers can lead to clutter and confusion,
+while mastering them unlocks the real power of Emacs.
+
+When juggling multiple projects, org files, scratchpads, and
+terminals — *a clean and controlled buffer/window system is the
+difference between chaos and flow.*
+
+Knowing how to open, close, split, navigate, and rearrange your
+workspace allows you to treat Emacs as a true digital cockpit. No
+mouse, no distractions, just pure intent-driven navigation.
+
+*** MENU:
+TODO
+
+*** Buffers vs Windows
+
+- A *buffer* is the content (like a file or REPL).
+- A *window* is the *pane* that displays a buffer.
+
+*** Buffer Keybindings Management 
+Use these keybindings to manage and control your buffers:
+
+| Keybinding | Command                | Description                          |
+|------------+------------------------+--------------------------------------|
+| SPC b b    | switch-to-buffer       | Switch to another buffer             |
+| SPC b c    | volatile-kill-buffer   | Close current buffer without prompt  |
+| SPC b i    | ibuffer                | Interactive buffer list              |
+| SPC b k    | kill-buffer            | Kill a selected buffer               |
+| SPC b n    | next-buffer            | Go to next buffer                    |
+| SPC b p    | previous-buffer        | Go to previous buffer                |
+| SPC b r    | revert-buffer          | Reload buffer from disk              |
+| SPC b s    | save-buffer            | Save current buffer                  |
+
+#+TIP: Use =ibuffer= for enhanced buffer management with grouping and filtering.
+
+*** 🪟 Window Management
+
+Efficient window splits let you keep context visible without constant buffer switching.
+
+*** Splits and Layouts
+
+| Keybinding | Command               | Description                          |
+|------------+-----------------------+--------------------------------------|
+| SPC w s    | evil-window-split     | Split window horizontally            |
+| SPC w v    | evil-window-vsplit    | Split window vertically              |
+| SPC w c    | evil-window-delete    | Close current window                 |
+| SPC w o    | delete-other-windows  | Maximize current window              |
+| SPC w n    | evil-window-new       | Open new empty window                |
+
+*** Navigation Between Windows
+
+| Keybinding | Command               | Description                          |
+|------------+-----------------------+--------------------------------------|
+| SPC w h    | evil-window-left      | Move to the left window              |
+| SPC w j    | evil-window-down      | Move to the window below             |
+| SPC w k    | evil-window-up        | Move to the window above             |
+| SPC w l    | evil-window-right     | Move to the right window             |
+| SPC w w    | evil-window-next      | Cycle to next window                 |
+
+*** Move Buffers Between Windows
+
+| Keybinding | Command              | Description                          |
+|------------+----------------------+--------------------------------------|
+| SPC w H    | buf-move-left        | Move buffer to left window           |
+| SPC w J    | buf-move-down        | Move buffer to window below          |
+| SPC w K    | buf-move-up          | Move buffer to window above          |
+| SPC w L    | buf-move-right       | Move buffer to right window          |
+
+* Package Management
+** Elpaca
+Emacsphere uses [[https://github.com/progfolio/elpaca][Elpaca]] as its package manager. Packages are
+installed and managed declaratively via the elpaca and use-package
+macros.
+
+*** Use-Package Integration
+Use =:ensure t= in use-package declarations to auto-install
+packages via Elpaca.
+
+Exemple:
+#+begin_src emacs-lisp
+(use-package foo
+    :ensure t)
+#+end_src
+
+For more information: =M-x descrive-function RET use-package=
+
+* Org Basics
+[[https://orgmode.org/index.html][Org Mode]] is a highly flexible and extensible system for organizing
+your life, notes, tasks, and projects directly within Emacs.
+
+- It is primarily used for **note-taking**, **task management**, and
+  **agenda planning**.
+- Org Mode files are **plain text** and can be easily exported to
+  various formats, including HTML, PDF, LaTeX, and more.
+- It allows you to structure your work using **headlines**,
+  **tables**, **checklists**, **timestamps**, and other powerful
+  features.
+
+Org Mode provides several key benefits:
+
+- 📑 **Plain text format**: Store everything in human-readable, easy-to-edit files.
+- 🗂️ **Hierarchical structure**: Organize your notes, tasks, and ideas in a nested structure.
+- ⏰ **Agenda view**: Plan and track your tasks with integrated deadlines and timestamps.
+- ✅ **To-do management**: Use tasks with customizable states (TODO, DONE, WAIT, and CANCELLED.).
+- 🎯 **Export**: Easily export your Org files to HTML, LaTeX, PDF, and other formats.
+- 🚀 **Integration with Emacs**: Seamlessly integrates with other Emacs features and packages.
+
+** Key Org Mode Concepts
+
+| Feature    | Description                                                          |
+|------------+----------------------------------------------------------------------|
+| Headline   | An organizational element represented by an asterisk (*).            |
+| TODOs      | Tasks that can have states like =TODO=, =DONE=, =WAIT=, =CANCELLED=. |
+| Agenda     | A calendar view of your tasks and deadlines.                         |
+| Tags       | Keywords used for categorizing tasks and notes.                      |
+| Properties | Additional metadata that can be associated with headings.            |
+| Timestamps | Dates or times associated with tasks or events.                      |
+
+** Essential Keybindings
+Org Mode has its own set of keybindings that make it extremely efficient for managing your tasks and notes:
+
+| Action                    | Keybinding |
+|---------------------------+------------|
+| Toggle heading visibility | =TAB=      |
+| Promote heading level     | =M-UP=     |
+| Demote heading level      | =M-DOWN=   |
+| Move item up              | =M-<up>=   |
+| Move item down            | =M-<down>= |
+| Change task state         | =SPC a t=  |
+| Add timestamp (deadline)  | =SPC a d=  |
+| Insert scheduled task     | =SPC a s=  |
+| Open agenda view          | =SPC a a=  |
+| Insert checkbox           | =SPC a x=  |
+
+** Managing Tasks and Projects
+Org Mode's task management system revolves around *headlines* and
+*TODO states*. You can create tasks and assign them custom states,
+such as =TODO=, =DONE=, =WAIT=, and =CANCELLED=. Here’s how to manage
+them:
+
+1. *Create Tasks*:
+   To create a new task, simply start a headline with a =*=:
+
+2. *Change Task State*:
+To change a task's state, use the =SPC a t= command and select the desired state (e.g., =TODO=, =DONE=).
+
+3. *Add Deadlines and Scheduling*:
+You can assign *deadlines* and *scheduled dates* to tasks:
+    - =SPC a d= to add a deadline.
+    - =SPC a s= to schedule a task for a specific date.
+
+4. *Agenda View*:
+View all your tasks and deadlines in an agenda view:
+    - =SPC a a= opens the agenda view, showing tasks for today, this week, or a custom view.
+
+5. *Tags and Properties*:  
+You can add tags and properties to tasks for better organization and filtering:
+    - Add tags by typing =:tag:= at the end of a heading.
+    - Use =SPC a p= to add or modify properties for tasks.
+
+** Introduction to Org Mode Timer
+The Org Mode Timer is a powerful tool to help you manage and track the
+time spent on tasks. It can be used to measure how long you work on a
+specific task, pause, continue, or reset the timer, and manage your
+workflow in a more efficient way.
+
+** Why Use Org Mode Timer?
+- *Track time*: Measure the time spent on tasks to improve productivity.
+- *Pause and resume*: Easily pause and resume the timer without losing track.
+- *Multiple timers*: Use multiple timers for different tasks or projects.
+- *Set durations*: Specify how long a task should take, helping you stay on track.
+
+** Key Timer Features
+- *Start a timer*: Begin tracking time for a task.
+- *Pause/Continue*: Pause the timer when you're taking a break or
+  switching focus, and continue when you're back to the task.
+- *Stop a timer*: End the current timer, and optionally log or record the time spent.
+- *Set a timer*: Configure a countdown timer that decrements over a specified period.
+
+** Org Timer Keybindings
+The Org Mode Timer is easily accessible via the following keybindings:
+
+| Action                   | Keybinding  |
+|--------------------------+-------------|
+| Start the timer          | =SPC o t s= |
+| Pause/Continue the timer | =SPC o t p= |
+| Stop the timer           | =SPC o t q= |
+| Set a timer              | =SPC o t t= |
+
+** How to Use the Timer
+:LOGBOOK:
+CLOCK: [2025-04-18 Fri 18:37]
+:END:
+1. *Start the Timer* To start the timer for a task, use the =SPC o t s= 
+   keybinding. This will begin tracking time for the currently active
+   Org heading or task.
+
+2. *Pause and Continue the Timer* If you need to take a break or
+   switch tasks, you can pause the timer using the =SPC o t p=
+   keybinding. To continue the timer after a pause, simply use the
+   same keybinding again.
+
+3. *Stop the Timer* When you are done with a task, you can stop the
+   timer by pressing =SPC o t q=. This will stop the current timer and
+   allow you to log or review the time spent.
+
+4. *Set a Timer* You can set a specific duration for a task by using
+   =SPC o t t=. This will create a countdown timer that decreases
+   until it reaches zero, at which point you’ll be alerted. This is
+
+
+* ️Main Programs Integrated in the Configuration
+This Emacs configuration integrates several powerful programs that
+extend Emacs' capabilities and enhance your workflow. These programs
+include *elfeed* for reading feeds, *pdf-tools* for viewing PDFs,
+*magit* for Git management, and other utilities that make your Emacs
+environment even more versatile.
+
+** Elfeed: RSS Reader
+[[https://github.com/skeeto/elfeed][Elfeed]] is a simple and flexible RSS feed reader for Emacs. It allows
+you to keep track of your favorite blogs, news sources, or any other
+RSS feed in a highly customizable interface.
+
+- *RSS Feed Integration*: Subscribe to your favorite websites and
+  blogs.
+- *Customizable Interface*: Elfeed provides an easy-to-use, text-based
+  interface for managing and reading feeds.
+- *Speed*: It's fast and efficient, with support for various feed
+  types.
+
+*** Keybindings for Elfeed
+
+| Action                      | Keybinding |
+|-----------------------------+------------|
+| Open Elfeed                 | =SPC f e=  |
+| Open a news feed            | =RET=      |
+| Open a news feed in browser | =o=        |
+| Refresh feeds               | =g=        |
+| Quit buffer                 | =q=        |
+
+*** How to Use Elfeed
+1. *Open Elfeed*: Use =SPC f e= to open Elfeed, where you can start
+   reading your subscribed feeds.
+   
+2. *Navigate Feeds*: Use the arrow keys or =j= and =k= to move between
+   entries, and =RET= to open an entry in your default browser.
+
+3. *Refresh Feeds*: Press =g= in the Elfeed buffer to refresh the
+   feeds and get the latest articles.
+
+4. *Open in Browser*: Press =o= in the Elfeed buffer to open the
+   feeds in your pre-defined browser.
+
+** PDF Tools: PDF Viewer
+[[https://github.com/vedang/pdf-tools][pdf-tools]] is a powerful PDF viewer that integrates seamlessly into
+Emacs. It provides features such as search, annotation, and navigation
+within PDF documents.
+
+- *Fast Viewing*: Open and read PDF documents within Emacs.
+- *Search and Navigation*: Easily search through the document or
+  navigate using a table of contents or bookmarks.
+- *Annotations*: Highlight text, underline, and add annotations
+  directly in the PDF.
+
+*** Keybindings for PDF Tools
+
+| Action                | Keybinding |
+|-----------------------+------------|
+| Open a PDF file       | =SPC f f=  |
+| Search within the PDF | =C-s=      |
+| Zoom in               | =+=        |
+| Zoom out              | =-=        |
+| Next page             | =n=        |
+| Previous page         | =p=        |
+
+*** How to Use PDF Tools
+1. *Open a PDF*: se =SPC f f= to find and open a PDF file. Once
+   opened, you can navigate through the pages using =n= and =p= to go
+   to the next or previous page.
+
+2. *Search in PDF*: o search within the document, press =C-s = to
+   initiate a search and type your query.
+
+3. *Zoom*: Use the =+= and =-= keys to zoom in and out of the PDF for
+   better readability.
+
+** Magit: Git Interface
+[[https://github.com/magit/magit][Magit]] is an Emacs interface for Git that allows you to interact with
+your repositories directly from Emacs. It provides an intuitive and
+efficient way to manage Git repositories without leaving your editor.
+
+- *Commit*: Stage, commit, and view changes in your repositories.
+- *Branching*: Create and manage branches with ease.
+- *Interactive Rebase*: Magit provides a powerful interface for
+  performing interactive rebases.
+
+*** Keybindings for Magit
+
+| Action            | Keybinding                        |
+|-------------------+-----------------------------------|
+| Open Magit Status | =SPC m g=                         |
+| Stage file change | =s= (in Magit status)             |
+| Stage all changes | =S= (in Magit status)             |
+| Commit changes    | =c c= (in Magit status)           |
+| Commit changes    | =C - c C - c= (in Commint status) |
+| Push changes      | =P p= (in Magit status)           |
+
+*** How to Use Magit
+1. **Open Magit Status**: Use =SPC m g= to open the Magit status
+   interface, where you can see all changes in your Git repository.
+
+2. **Stage Changes**: Press =s= to stage changes, then press =c c= to
+   commit them.
+
+3. **Push Changes**: After committing, press =P p= to push your
+   changes to the remote repository.
+
+** Vterm
+[[https://github.com/akermu/emacs-libvterm][vterm]] is a terminal emulator within Emacs that allows you to run shell
+commands and interact with the terminal directly from within Emacs. It
+provides a more feature-rich terminal experience compared to the
+default Emacs *term* mode, offering better performance, interactivity,
+and features such as true color support and input handling.
+
+With *vterm*, you can seamlessly integrate shell usage into your Emacs
+workflow without leaving the editor, making it an essential tool for
+developers, sysadmins, or anyone who frequently works with the
+terminal.
+
+- *True Color Support*: vterm supports true color, ensuring that
+  applications in the terminal display with accurate colors.
+- *Asynchronous Input*: It provides a smooth experience with
+  asynchronous input handling, ensuring the terminal remains
+  responsive even for long-running processes.
+- *Performance*: vterm is optimized for performance, making it faster
+  and more efficient than the default =term mode=.
+- *Seamless Integration*: Run shell commands, use utilities like
+  =htop=, and manage your system entirely within Emacs.
+
+*** Keybindings for vterm
+
+| Action                 | Keybinding |
+|------------------------+------------|
+| Open vterm terminal    | =SPC v o=  |
+| Toggle vterm terminal  | =SPC v t=  |
+| Toggle vterm show/hide | =SPC v T=  |
+
+
+* Final Thoughts
+The programs integrated into your Emacs configuration — =elfeed=,
+=pdf-tools=, =magit=, and others — allow you to manage your workflows
+more efficiently. Whether you're reading feeds, reviewing PDFs,
+managing Git repositories, or handling files within Emacs, these tools
+are designed to improve productivity and streamline your daily tasks.
+
+By combining these tools within a single environment, Emacs becomes a
+powerful, integrated hub for all your work.

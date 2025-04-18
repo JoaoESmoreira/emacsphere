@@ -1,6 +1,7 @@
 (add-to-list 'load-path "~/.emacs.d/scripts/")
 
 (require 'buffer-move)   ;; Buffer-move for better window management
+(require 'manual)
 
 (defvar elpaca-installer-version 0.10)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -130,21 +131,36 @@
     :prefix "SPC"
     :global-prefix "M-SPC") ;; leader key in insert mode
   
+  ;; emacsphere help
+  (jm/leader-keys
+    "h" '(manual-emacsphere t :wk "Emacsphere help"))
+
   ;; agenda
   (jm/leader-keys
     "a" '(:ignore t :wk "Org-agenda")
     "a a" '(org-agenda :wk "Open org agenda menu")
+    "a f" '((lambda () (interactive) (find-file "~/Documents/OrgFiles/Tasks.org")) :wk "Find tasks file")
     "a p" '(org-priority :wk "Insert a priority")
     "a s" '(org-schedule :wk "Insert a schedule")
-    "a t" '((lambda () (interactive) (find-file "~/Documents/OrgFiles/Tasks.org")) :wk "Find tasks file"))
+    "a t" '(org-todo :wk "Change the state: (TODO/DONE/...)")
+  )
 
   ;; org
   (jm/leader-keys
-    "o" '(:ignore t :wk "Org-agenda")
+    "o" '(:ignore t :wk "Org-...")
     "o t p" '(org-timer-pause-or-continue :wk "Pause/Continue the timer")
     "o t q" '(org-timer-stop :wk "Stop timer")
     "o t s" '(org-timer-start :wk "Start timer")
     "o t t" '(org-timer-set-timer :wk "Set decreasing timer"))
+
+  ;; eval
+  (jm/leader-keys
+    "e" '(:ignore t :wk "Evaluate")    
+    "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+    "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+    "e e" '(eval-expression :wk "Evaluate and elisp expression")
+    "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+    "e r" '(eval-region :wk "Evaluate elisp in region"))
 
   ;; buffers
   (jm/leader-keys
@@ -194,7 +210,7 @@
               :wk "Reload emacs config")
     "f u" '(sudo-edit-find-file :wk "Sudo find file")
     "f U" '(sudo-edit :wk "Sudo edit file")
-    "f y" '(copy-file :wk "Copy this file")
+    "f y" '(copy-file :wk "Copy a file")
     "TAB TAB" '(evilnc-comment-or-uncomment-lines :wk "Comment line"))
 
   ;; bookmarks and registers
@@ -490,18 +506,21 @@
           ("HACK"       font-lock-constant-face bold)
           ("REVIEW"     font-lock-keyword-face bold)
           ("NOTE"       success bold)
+          ("DONE"       . "#00ff00")
           ("DEPRECATED" font-lock-doc-face bold)
           ("todo"       warning bold)
           ("fixme"      error bold)
           ("hack"       font-lock-constant-face bold)
           ("review"     font-lock-keyword-face bold)
           ("note"       success bold)
+          ("done"       . "#00ff00")
           ("deprecated" font-lock-doc-face bold)
           ("Todo"       warning bold)
           ("Fixme"      error bold)
           ("Hack"       font-lock-constant-face bold)
           ("Review"     font-lock-keyword-face bold)
           ("Note"       success bold)
+          ("Done"       . "#00ff00")
           ("Deprecated" font-lock-doc-face bold))))
 
 (use-package sudo-edit
