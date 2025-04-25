@@ -1,4 +1,4 @@
-#+TITLE: GNU Emacs Config
++TITLE: GNU Emacs Config
 #+AUTHOR: Joao ES Moreira
 #+DESCRIPTION: Emacsphere is a Emacs configuration designed for development environment in constant orbit around flow and focus.
 #+STARTUP: showeverything
@@ -13,6 +13,7 @@
   - [[#elfeed-navigation][Elfeed Navigation]]
 - [[#sanity][Sanity]]
   - [[#backup-files][Backup Files]]
+  - [[#paragraph-size][Paragraph size]]
 - [[#general-keybinds][GENERAL KEYBINDS]]
 - [[#which-key][WHICH KEY]]
 - [[#better-m-x][BETTER M-x]]
@@ -24,6 +25,7 @@
   - [[#org-agenda][Org agenda]]
   - [[#bullets][Bullets]]
   - [[#table-of-contents][Table of Contents]]
+  - [[#export-org-to-html][Export org to html]]
 - [[#graphical-user-interface-config][GRAPHICAL USER INTERFACE CONFIG]]
   - [[#general-config-ui][General Config UI]]
   - [[#dashboard][Dashboard]]
@@ -175,6 +177,12 @@
 (setq backup-directory-alist '((".*" . "~/.Trash")))
 #+end_src
 
+** Paragraph size
+#+begin_src emacs-lisp
+(setq set-fill-column 120)
+(setq fill-column 120)
+#+end_src
+
 * GENERAL KEYBINDS
 #+begin_src emacs-lisp
 (defun volatile-kill-buffer ()
@@ -210,6 +218,7 @@
   ;; org
   (jm/leader-keys
     "o" '(:ignore t :wk "Org-...")
+    "o t c" '(org-time-stamp :wk "Stamp current time")
     "o t p" '(org-timer-pause-or-continue :wk "Pause/Continue the timer")
     "o t q" '(org-timer-stop :wk "Stop timer")
     "o t s" '(org-timer-start :wk "Start timer")
@@ -448,6 +457,18 @@
     :hook (org-mode . toc-org-enable))
 #+end_src
 
+** Export org to html
+#+begin_src emacs-lisp
+(use-package simple-httpd
+    :ensure t
+    :defer t)
+(use-package htmlize
+    :ensure t
+    :defer t
+    :config
+        (setq org-html-htmlize-output-type 'inline-css))
+#+end_src
+
 * GRAPHICAL USER INTERFACE CONFIG
 ** General Config UI
 #+begin_src emacs-lisp
@@ -499,6 +520,10 @@
 #+begin_src emacs-lisp
 (use-package dashboard
     :ensure t 
+    :hook
+	(dashboard-mode . (lambda ()
+                    (global-display-line-numbers-mode nil)
+		    (setq display-line-numbers nil)))
     :init
         (setq initial-buffer-choice 'dashboard-open)
         (setq dashboard-set-heading-icons t)

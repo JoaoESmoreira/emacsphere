@@ -115,6 +115,9 @@
 (setq make-backup-files nil) ;; stop create backup files
 (setq backup-directory-alist '((".*" . "~/.Trash")))
 
+(setq set-fill-column 120)
+(setq fill-column 120)
+
 (defun volatile-kill-buffer ()
    "Kill current buffer unconditionally."
    (interactive)
@@ -148,6 +151,7 @@
   ;; org
   (jm/leader-keys
     "o" '(:ignore t :wk "Org-...")
+    "o t c" '(org-time-stamp :wk "Stamp current time")
     "o t p" '(org-timer-pause-or-continue :wk "Pause/Continue the timer")
     "o t q" '(org-timer-stop :wk "Stop timer")
     "o t s" '(org-timer-start :wk "Start timer")
@@ -358,6 +362,15 @@
     :defer t
     :hook (org-mode . toc-org-enable))
 
+(use-package simple-httpd
+    :ensure t
+    :defer t)
+(use-package htmlize
+    :ensure t
+    :defer t
+    :config
+        (setq org-html-htmlize-output-type 'inline-css))
+
 (delete-selection-mode 1)    ;; You can select text and delete it by typing.
 (electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
 (electric-pair-mode 1)       ;; Turns on automatic parens pairing
@@ -403,6 +416,10 @@
 
 (use-package dashboard
     :ensure t 
+    :hook
+	(dashboard-mode . (lambda ()
+                    (global-display-line-numbers-mode nil)
+		    (setq display-line-numbers nil)))
     :init
         (setq initial-buffer-choice 'dashboard-open)
         (setq dashboard-set-heading-icons t)
@@ -486,7 +503,7 @@
     ;; When running programs in Vterm and in 'normal' mode, make sure that ESC
     ;; kills the program as it would in most standard terminal programs.
     (evil-define-key 'normal vterm-mode-map (kbd "<escape>") 'vterm--self-insert)
-    (setq vterm-toggle-fullscreen-p nil)
+    (setq vterm-toggle-fullscreen-p t)
     (setq vterm-toggle-scope 'project)
     (add-to-list 'display-buffer-alist
                '((lambda (buffer-or-name _)

@@ -132,75 +132,80 @@ Features:
 ** Key sequence documentation
 In the following table it is possible to find the documentation of all *key sequence*.
 
-| Prefix   | Key(s) | Command                                  | Description                                 |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC h    |        | manual-emacsphere                        | Emacsphere help                             |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC a    | a      | org-agenda                               | Open org agenda menu                        |
-|          | f      | (lambda ...)                             | Find tasks file                             |
-|          | p      | org-priority                             | Insert a priority                           |
-|          | s      | org-schedule                             | Insert a schedule                           |
-|          | t      | org-todo                                 | Change TODO state                           |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC o    | t p    | org-timer-pause-or-continue              | Pause or continue the timer                 |
-|          | t q    | org-timer-stop                           | Stop timer                                  |
-|          | t s    | org-timer-start                          | Start timer                                 |
-|          | t t    | org-timer-set-timer                      | Set decreasing timer                        |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC e    | b      | eval-buffer                              | Evaluate elisp in buffer                    |
-|          | d      | eval-defun                               | Evaluate defun containing or after point    |
-|          | e      | eval-expression                          | Evaluate an elisp expression                |
-|          | l      | eval-last-sexp                           | Evaluate expression before point            |
-|          | r      | eval-region                              | Evaluate elisp in region                    |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC b    | b      | switch-to-buffer                         | Switch buffer                               |
-|          | c      | volatile-kill-buffer                     | Close this buffer (unconditionally)         |
-|          | i      | ibuffer                                  | Ibuffer                                     |
-|          | k      | kill-buffer                              | Close a buffer                              |
-|          | n      | next-buffer                              | Next buffer                                 |
-|          | p      | previous-buffer                          | Previous buffer                             |
-|          | r      | revert-buffer                            | Reload buffer                               |
-|          | s      | save-buffer                              | Save buffer                                 |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC w    | c      | evil-window-delete                       | Close window                                |
-|          | n      | evil-window-new                          | New window                                  |
-|          | s      | evil-window-split                        | Horizontal split window                     |
-|          | v      | evil-window-vsplit                       | Vertical split window                       |
-|          | o      | delete-other-windows                     | Delete other windows                        |
-|          | h      | evil-window-left                         | Goto window left                            |
-|          | j      | evil-window-down                         | Goto window down                            |
-|          | k      | evil-window-up                           | Goto window up                              |
-|          | l      | evil-window-right                        | Goto window right                           |
-|          | w      | evil-window-next                         | Goto next window                            |
-|          | H      | buf-move-left                            | Move buffer left                            |
-|          | J      | buf-move-down                            | Move buffer down                            |
-|          | K      | buf-move-up                              | Move buffer up                              |
-|          | L      | buf-move-right                           | Move buffer right                           |
-|          | t      | term                                     | Open terminal                               |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC f    | c      | (lambda ...)                             | Find config file                            |
-|          | d      | dashboard-open                           | Open dashboard buffer                       |
-|          | e      | elfeed                                   | Open elfeed news                            |
-|          | f      | find-file                                | Find files                                  |
-|          | r      | (lambda ...)                             | Reload Emacs config                         |
-|          | u      | sudo-edit-find-file                      | Sudo find file                              |
-|          | U      | sudo-edit                                | Sudo edit file                              |
-|          | y      | copy-file                                | Copy a file                                 |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| TAB TAB  |        | evilnc-comment-or-uncomment-lines        | Comment/uncomment line                      |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC r    | j      | bookmark-jump                            | Jump to bookmark                            |
-|          | d      | bookmark-delete                          | Delete bookmark                             |
-|          | l      | bookmark-bmenu-list                      | List bookmarks                              |
-|          | n      | bookmark-set                             | Set new bookmark                            |
-|          | N      | bookmark-set-no-overwrite                | Set bookmark without overwriting existing   |
-|          | s      | bookmark-save                            | Save current bookmark values                |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC m    | g      | magit-status                             | Magit status                                |
-|----------+--------+------------------------------------------+---------------------------------------------|
-| SPC v    | o      | vterm                                    | Open vterm                                  |
-|          | t      | vterm-toggle                             | Toggle vterm                                |
-|          | T      | vterm-toggle-show                        | Toggle vterm show                           |
+| Prefix    | Key(s) | Command                           | Description                               |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC h     |        | manual-emacsphere                 | Emacsphere help                           |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC a     | a      | org-agenda                        | Open org agenda menu                      |
+|           | f      | (lambda ...)                      | Find tasks file                           |
+|           | p      | org-priority                      | Insert a priority                         |
+|           | s      | org-schedule                      | Insert a schedule                         |
+|           | t      | org-todo                          | Change TODO state                         |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC o     | t p    | org-timer-pause-or-continue       | Pause or continue the timer               |
+|           | t q    | org-timer-stop                    | Stop timer                                |
+|           | t s    | org-timer-start                   | Start timer                               |
+|           | t t    | org-timer-set-timer               | Set decreasing timer                      |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC e     | b      | eval-buffer                       | Evaluate elisp in buffer                  |
+|           | d      | eval-defun                        | Evaluate defun containing or after point  |
+|           | e      | eval-expression                   | Evaluate an elisp expression              |
+|           | l      | eval-last-sexp                    | Evaluate expression before point          |
+|           | r      | eval-region                       | Evaluate elisp in region                  |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC b     | b      | switch-to-buffer                  | Switch buffer                             |
+|           | c      | volatile-kill-buffer              | Close this buffer (unconditionally)       |
+|           | i      | ibuffer                           | Ibuffer                                   |
+|           | k      | kill-buffer                       | Close a buffer                            |
+|           | n      | next-buffer                       | Next buffer                               |
+|           | p      | previous-buffer                   | Previous buffer                           |
+|           | r      | revert-buffer                     | Reload buffer                             |
+|           | s      | save-buffer                       | Save buffer                               |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC w     | c      | evil-window-delete                | Close window                              |
+|           | n      | evil-window-new                   | New window                                |
+|           | s      | evil-window-split                 | Horizontal split window                   |
+|           | v      | evil-window-vsplit                | Vertical split window                     |
+|           | o      | delete-other-windows              | Delete other windows                      |
+|           | h      | evil-window-left                  | Goto window left                          |
+|           | j      | evil-window-down                  | Goto window down                          |
+|           | k      | evil-window-up                    | Goto window up                            |
+|           | l      | evil-window-right                 | Goto window right                         |
+|           | w      | evil-window-next                  | Goto next window                          |
+|           | H      | buf-move-left                     | Move buffer left                          |
+|           | J      | buf-move-down                     | Move buffer down                          |
+|           | K      | buf-move-up                       | Move buffer up                            |
+|           | L      | buf-move-right                    | Move buffer right                         |
+|           | t      | term                              | Open terminal                             |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC f     | c      | (lambda ...)                      | Find config file                          |
+|           | d      | dashboard-open                    | Open dashboard buffer                     |
+|           | e      | elfeed                            | Open elfeed news                          |
+|           | f      | find-file                         | Find files                                |
+|           | r      | (lambda ...)                      | Reload Emacs config                       |
+|           | u      | sudo-edit-find-file               | Sudo find file                            |
+|           | U      | sudo-edit                         | Sudo edit file                            |
+|           | y      | copy-file                         | Copy a file                               |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| TAB TAB   |        | evilnc-comment-or-uncomment-lines | Comment/uncomment line                    |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC r     | j      | bookmark-jump                     | Jump to bookmark                          |
+|           | d      | bookmark-delete                   | Delete bookmark                           |
+|           | l      | bookmark-bmenu-list               | List bookmarks                            |
+|           | n      | bookmark-set                      | Set new bookmark                          |
+|           | N      | bookmark-set-no-overwrite         | Set bookmark without overwriting existing |
+|           | s      | bookmark-save                     | Save current bookmark values              |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC m     | g      | magit-status                      | Magit status                              |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| SPC v     | o      | vterm                             | Open vterm                                |
+|           | t      | vterm-toggle                      | Toggle vterm                              |
+|           | T      | vterm-toggle-show                 | Toggle vterm show                         |
+|-----------+--------+-----------------------------------+-------------------------------------------|
+| C-<left>  |        | shrink-window-horizontally        | Decrease windows size horizontally        |
+| C-<right> |        | enlarge-window-horizontally       | Increase windows size horizontally        |
+| C-<down>  |        | shrink-window                     | Dencrease windows size                    |
+| C-<up>    |        | enlarge-window                    | Increase windows size                     |
 
 ** Buffer and Window Management
 In Emacs, the most important object is the buffer. A buffer is an
@@ -223,11 +228,7 @@ Knowing how to open, close, split, navigate, and rearrange your
 workspace allows you to treat Emacs as a true digital cockpit. No
 mouse, no distractions, just pure intent-driven navigation.
 
-*** MENU:
-TODO
-
 *** Buffers vs Windows
-
 - A *buffer* is the content (like a file or REPL).
 - A *window* is the *pane* that displays a buffer.
 
@@ -245,10 +246,7 @@ Use these keybindings to manage and control your buffers:
 | SPC b r    | revert-buffer          | Reload buffer from disk              |
 | SPC b s    | save-buffer            | Save current buffer                  |
 
-#+TIP: Use =ibuffer= for enhanced buffer management with grouping and filtering.
-
-*** 🪟 Window Management
-
+*** Window Management
 Efficient window splits let you keep context visible without constant buffer switching.
 
 *** Splits and Layouts
@@ -280,6 +278,15 @@ Efficient window splits let you keep context visible without constant buffer swi
 | SPC w K    | buf-move-up          | Move buffer to window above          |
 | SPC w L    | buf-move-right       | Move buffer to right window          |
 
+*** Resizing Windows
+
+| Keybinding | Command                     | Description                        |
+|------------+-----------------------------+------------------------------------|
+| C-<left>   | shrink-window-horizontally  | Decrease windows size horizontally |
+| C-<right>  | enlarge-window-horizontally | Increase windows size horizontally |
+| C-<down>   | shrink-window               | Dencrease windows size             |
+| C-<up>     | enlarge-window              | Increase windows size              |
+
 * Package Management
 ** Elpaca
 Emacsphere uses [[https://github.com/progfolio/elpaca][Elpaca]] as its package manager. Packages are
@@ -302,22 +309,22 @@ For more information: =M-x descrive-function RET use-package=
 [[https://orgmode.org/index.html][Org Mode]] is a highly flexible and extensible system for organizing
 your life, notes, tasks, and projects directly within Emacs.
 
-- It is primarily used for **note-taking**, **task management**, and
-  **agenda planning**.
-- Org Mode files are **plain text** and can be easily exported to
+- It is primarily used for *note-taking*, *task management*, and
+  *agenda planning*.
+- Org Mode files are *plain text* and can be easily exported to
   various formats, including HTML, PDF, LaTeX, and more.
-- It allows you to structure your work using **headlines**,
-  **tables**, **checklists**, **timestamps**, and other powerful
+- It allows you to structure your work using *headlines*,
+  *tables*, *checklists*, *timestamps*, and other powerful
   features.
 
 Org Mode provides several key benefits:
 
-- 📑 **Plain text format**: Store everything in human-readable, easy-to-edit files.
-- 🗂️ **Hierarchical structure**: Organize your notes, tasks, and ideas in a nested structure.
-- ⏰ **Agenda view**: Plan and track your tasks with integrated deadlines and timestamps.
-- ✅ **To-do management**: Use tasks with customizable states (TODO, DONE, WAIT, and CANCELLED.).
-- 🎯 **Export**: Easily export your Org files to HTML, LaTeX, PDF, and other formats.
-- 🚀 **Integration with Emacs**: Seamlessly integrates with other Emacs features and packages.
+- *Plain text format*: Store everything in human-readable, easy-to-edit files.
+- *Hierarchical structure*: Organize your notes, tasks, and ideas in a nested structure.
+- *Agenda view*: Plan and track your tasks with integrated deadlines and timestamps.
+- *To-do management*: Use tasks with customizable states (TODO, DONE, WAIT, and CANCELLED.).
+- *Export*: Easily export your Org files to HTML, LaTeX, PDF, and other formats.
+- *Integration with Emacs*: Seamlessly integrates with other Emacs features and packages.
 
 ** Key Org Mode Concepts
 
