@@ -151,6 +151,18 @@
   ;; org
   (jm/leader-keys
     "o" '(:ignore t :wk "Org-...")
+    "o n"   '(:ignore t :wk "Org-notes")
+    "o n f" '(org-roam-node-find :wk "Create a note")
+    "o n i" '(org-roam-node-insert :wk "Create a link")
+    "o n l" '(org-roam-buffer-toggle :wk "Create a note")
+    "o n c" '(org-id-get-create :wk "Create a node id")
+
+    "o h"   '(:ignore t :wk "Highlight")
+    ;; "o h a" '(unhighlight-all-in-buffer :wk "Un highlight a regexp")
+    "o h h" '(highlight-regexp :wk "Highlight a regexp")
+    "o h u" '(unhighlight-regexp :wk "Un highlight a regexp")
+
+    "o t"   '(:ignore t :wk "Org-timer")
     "o t c" '(org-time-stamp :wk "Stamp current time")
     "o t p" '(org-timer-pause-or-continue :wk "Pause/Continue the timer")
     "o t q" '(org-timer-stop :wk "Stop timer")
@@ -207,6 +219,7 @@
     "f d" '(dashboard-open :wk "Open dashboard buffer")
     "f e" '(elfeed :wk "Open elfeed news")
     "f f" '(find-file :wk "Find files")
+    "f m" '(mu4e :wk "Open mail")
     "f r" '((lambda () 
 	        (interactive)
                 (load-file "~/.emacs.d/init.el")
@@ -232,9 +245,19 @@
     "m" '(:ignore t :wk "Magit")
     "m g" '(magit-status :which-key "Magit status"))
 
+  ;; python
+  (jm/leader-keys
+    "p" '(:ignore t :wk "Python dev")
+    "p b" '(python-shell-send-buffer :wk "Run python buffer")
+    "p e" '(pyenv-mode-set :wk "Python environment set")
+    "p f" '(python-shell-send-file :wk "Run python file")
+    "p l" '(python-shell-send-region :wk "Run python region/lines")
+    "p r" '(run-python :wk "Run python interpreter")
+    "p c" '(compile :wk "Compile"))
+
   ;; vterm
   (jm/leader-keys
-    "v" '(:ignore t :wk "Neotree")
+    "v" '(:ignore t :wk "vterm")
     "v o" '(vterm :wk "Open vterm")
     "v t" '(vterm-toggle :wk "Toggle vterm")
     "v T" '(vterm-toggle-show :wk "Toggle vterm show"))
@@ -309,18 +332,19 @@
 (setq org-agenda-span 31) ;; mostra 7 dias
 (setq org-agenda-start-day "-7d") ;; começa 3 dias antes de hoje
 
+(setq org-agenda-todo-ignore-done t)
 (setq org-agenda-custom-commands
-    '(("A" "View all details"
-        ((tags "PRIORITY=\"A\""
-                ((org-agenda-overriding-header "High-priority tasks:")))
-        (tags "PRIORITY=\"B\""
-                ((org-agenda-overriding-header "Medium-priority tasks:")))
-        (tags "PRIORITY=\"C\""
-                ((org-agenda-overriding-header "Low-priority tasks:")))
-        (tags "reminder"
-                ((org-agenda-overriding-header "Tasks marked with reminders:")))
-        (agenda "")
-        (alltodo "")))))
+      '(("A" "View all details"
+         ((tags-todo "PRIORITY=\"A\"-DONE"
+                     ((org-agenda-overriding-header "High-priority tasks:")))
+          (tags-todo "PRIORITY=\"B\"-DONE"
+                     ((org-agenda-overriding-header "Medium-priority tasks:")))
+          (tags-todo "PRIORITY=\"C\"-DONE"
+                     ((org-agenda-overriding-header "Low-priority tasks:")))
+          (tags-todo "reminder-DONE"
+                     ((org-agenda-overriding-header "Tasks marked with reminders:")))
+          (agenda "")
+          (alltodo "")))))
 
 (use-package org-fancy-priorities
     :ensure t
@@ -332,10 +356,11 @@
 (setq org-todo-keywords
     '((sequence
         "TODO(t)"
-        "DONE(d)"
         "WAIT(w)"
         "CANCELLED(c)"
         "IN-PROGRESS(p)"
+	"|"
+        "DONE(d)"
 )))
 
 (setq org-todo-keyword-faces
@@ -352,6 +377,14 @@
             (evil-normalize-keymaps)
             (evil-local-mode 1)))
 
+(use-package org-roam
+    :ensure t
+    :custom
+        (org-roam-directory "~/Documents/OrgFiles/org_notes")
+        (org-roam-completion-everywhere t)
+    :config
+        (org-roam-setup))
+
 (use-package org-bullets
     :ensure t
     :defer t
@@ -367,9 +400,11 @@
     :defer t)
 (use-package htmlize
     :ensure t
+    :after org
     :defer t
     :config
         (setq org-html-htmlize-output-type 'inline-css))
+(add-hook 'org-mode-hook #'htmlize-buffer)
 
 (delete-selection-mode 1)    ;; You can select text and delete it by typing.
 (electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
@@ -413,6 +448,10 @@
           (lambda ()
             (when (get-buffer "*Messages*")
               (kill-buffer "*Messages*"))))
+
+;; display a vertical line
+(setq-default display-fill-column-indicator-column 130)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 (use-package dashboard
     :ensure t 
@@ -503,7 +542,7 @@
     ;; When running programs in Vterm and in 'normal' mode, make sure that ESC
     ;; kills the program as it would in most standard terminal programs.
     (evil-define-key 'normal vterm-mode-map (kbd "<escape>") 'vterm--self-insert)
-    (setq vterm-toggle-fullscreen-p t)
+    (setq vterm-toggle-fullscreen-p nil)
     (setq vterm-toggle-scope 'project)
     (add-to-list 'display-buffer-alist
                '((lambda (buffer-or-name _)
@@ -552,6 +591,13 @@
 (use-package sudo-edit
     :ensure t
     :defer t)
+
+(use-package pyenv-mode
+    :ensure t
+    :init
+        (setenv "WORKON_HOME" "~/.pyenv/versions/")
+    :config
+        (pyenv-mode))
 
 (use-package elfeed
     :ensure t
@@ -631,3 +677,74 @@
 (use-package request
     :ensure t
     :defer t)
+
+(use-package mu4e
+  :ensure nil
+  :load-path "/usr/share/emacs/site-lisp/mu4e/"
+  :config
+  (setq mu4e-change-filenames-when-moving t
+        mu4e-update-interval (* 3 60)
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-maildir "~/Mail"
+        message-send-mail-function 'smtpmail-send-it
+        auth-sources '("~/.authinfo.gpg"))
+        ;; mu4e-compose-context-policy 'ask
+        ;; mu4e-context-policy 'pick-first
+
+  ;; sort emails by date
+  (setq mu4e-headers-sort-field :date)
+  (setq mu4e-headers-sort-direction 'descending)
+
+  ;; Shortcuts
+  (setq mu4e-maildir-shortcuts
+        '(("/gmail/INBOX"             . ?g)
+          ("/gmail/Sent"              . ?G)
+          ("/gmail/Trash"             . ?x)
+          ("/gmail/Drafts"            . ?d)
+          ("/dei/INBOX"               . ?i)
+          ("/dei/mail/sent-mail"      . ?s)
+          ("/dei/mail/Trash"          . ?t)
+          ("/dei/mail/Drafts"         . ?D)))
+
+  ;; Context for multiple accounts
+  (setq mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "Gmail"
+             :enter-func (lambda () (mu4e-message "Loading Gmail..."))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+             :vars '((user-mail-address . "jesmoreira2010@gmail.com")
+                     (user-full-name . "João ES Moreira")
+                     (mu4e-sent-folder   . "/gmail/Sent")
+                     (mu4e-drafts-folder . "/gmail/Drafts")
+                     (mu4e-trash-folder  . "/gmail/Trash")
+                     (mu4e-refile-folder . "/gmail/Archive")
+                     (smtpmail-smtp-server . "smtp.gmail.com")
+                     (smtpmail-smtp-service . 465)
+                     (smtpmail-stream-type . ssl)))
+
+           ,(make-mu4e-context
+             :name "DEI"
+             :enter-func (lambda () (mu4e-message "Loading DEI..."))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-prefix-p "/dei" (mu4e-message-field msg :maildir))))
+             :vars '((user-mail-address . "joaomoreira@student.dei.uc.pt")
+                     (user-full-name . "joao moreira")
+                     (mu4e-sent-folder   . "/dei/mail/sent-mail")
+                     (mu4e-drafts-folder . "/dei/mail/Drafts")
+                     (mu4e-trash-folder  . "/dei/mail/Trash")
+                     (mu4e-refile-folder . "/dei/mail/Archive")
+                     (smtpmail-smtp-server . "smtp.dei.uc.pt")
+                     (smtpmail-smtp-service . 465)
+                     (smtpmail-stream-type . ssl)))))
+)
+
+(use-package mu4e-alert
+  :ensure t
+  :after mu4e
+  :config
+    (mu4e-alert-enable-notifications)
+    (mu4e-alert-enable-mode-line-display)
+    (add-hook 'after-init-hook #'mu4e-alert-enable)) ;; for all folder in mu4e

@@ -58,3 +58,7 @@ tramp
 
 request/
 ielm-history.eld
+
+.org-id-locations
+network-security.data
+org-roam.dbg
